@@ -1,3 +1,12 @@
-export default function Total({ exercise1, exercise2, exercise3 }) {
-  return <p>Number of exercises {exercise1 + exercise2 + exercise3}</p>;
-}
+const Total = (props) => {
+  return (
+    <p>
+      Number of exercises{' '}
+      {props.parts[0].exercises +
+        props.parts[1].exercises +
+        props.parts[2].exercises}
+    </p>
+  );
+};
+
+export default Total;
