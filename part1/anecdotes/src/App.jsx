@@ -19,8 +19,15 @@ const App = () => {
   );
 
   const nextAnecdotes = () => setSelected(randomInt(anecdotes.length));
+
   const vote = () =>
     setPoints((points) => ({ ...points, [selected]: points[selected] + 1 }));
+
+  const mostVotedIdx = () =>
+    Object.entries(points).reduce(
+      (maxIdx, [idx, votes]) => (votes > points[maxIdx] ? idx : maxIdx),
+      0
+    );
 
   return (
     <>
@@ -29,6 +36,10 @@ const App = () => {
       <p>has {points[selected]} votes</p>
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdotes}>next anecdotes</button>
+
+      <h1>Anecdote with most votes</h1>
+      <p>{anecdotes[mostVotedIdx()]}</p>
+      <p>has {points[mostVotedIdx()]} votes</p>
     </>
   );
 };
