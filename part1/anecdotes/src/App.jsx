@@ -1,5 +1,7 @@
 import { useState } from 'react';
 
+const randomInt = (max) => Math.floor(Math.random() * max);
+
 const App = () => {
   const anecdotes = [
     'If it hurts, do it more often.',
@@ -11,20 +13,22 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
   ];
 
-  const [selected, setSelected] = useState(0);
+  const [selected, setSelected] = useState(randomInt(anecdotes.length));
+  const [points, setPoints] = useState(() =>
+    Object.assign({}, Array(anecdotes.length).fill(0))
+  );
 
-  function getRandomArbitrary(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-  }
+  const nextAnecdotes = () => setSelected(randomInt(anecdotes.length));
+  const vote = () =>
+    setPoints((points) => ({ ...points, [selected]: points[selected] + 1 }));
 
   return (
     <>
+      <h1>Anecdote of the day</h1>
       <p>{anecdotes[selected]}</p>
-      <button
-        onClick={() => setSelected(getRandomArbitrary(0, anecdotes.length))}
-      >
-        next anecdotes
-      </button>
+      <p>has {points[selected]} votes</p>
+      <button onClick={vote}>vote</button>
+      <button onClick={nextAnecdotes}>next anecdotes</button>
     </>
   );
 };
