@@ -12,6 +12,7 @@ const App = () => {
   ]);
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
+  const [keyword, setKeyword] = useState('');
 
   const addPerson = (e) => {
     e.preventDefault();
@@ -36,6 +37,15 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+
+      <ControlledInput
+        text="filter shown with"
+        value={keyword}
+        onChange={(e) => setKeyword(e.target.value)}
+      />
+
+      <h2>add a new</h2>
+
       <form onSubmit={addPerson}>
         <ControlledInput
           text="name"
@@ -47,11 +57,15 @@ const App = () => {
           value={newNumber}
           onChange={(e) => setNewNumber(e.target.value)}
         />
+
         <div>
           <button type="submit">add</button>
         </div>
       </form>
-      <Numbers persons={persons} />
+
+      <Numbers
+        persons={persons.filter((p) => p.name.toLowerCase().includes(keyword.toLowerCase()))}
+      />
     </div>
   );
 };
