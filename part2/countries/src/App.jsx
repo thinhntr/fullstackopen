@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import SingleCountry from './SingleCountry';
+import ManyCountries from './ManyCountries';
 
 const App = () => {
   const [countries, setCountries] = useState([]);
@@ -16,35 +18,11 @@ const App = () => {
 
     if (res.length === 0) return res;
 
-    if (res.length > 10) {
-      return <p>Too many matches, specify another filter</p>;
-    }
+    if (res.length > 10) return <p>Too many matches, specify another filter</p>;
 
-    if (res.length > 1) {
-      return (
-        <ul>
-          {res.map((country) => (
-            <li key={country.name.common}>{country.name.common}</li>
-          ))}
-        </ul>
-      );
-    }
+    if (res.length > 1) return <ManyCountries countries={res} />;
 
-    const country = res[0];
-    return (
-      <>
-        <h1>{country.name.common}</h1>
-        <p>capital {country.capital[0]}</p>
-        <p>area {country.area}</p>
-        <h2>languages</h2>
-        <ul>
-          {Object.values(country.languages).map((lang) => (
-            <li key={lang}>{lang}</li>
-          ))}
-        </ul>
-        <img src={country.flags.png} />
-      </>
-    );
+    return <SingleCountry country={res[0]} />;
   };
 
   useEffect(() => {
