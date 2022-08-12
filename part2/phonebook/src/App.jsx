@@ -1,27 +1,18 @@
 import { useState } from 'react';
 
-const Numbers = ({ persons }) => (
-  <div>
-    <h2>Numbers</h2>
-    {persons.map((p) => (
-      <p key={p.name}>{p.name}</p>
-    ))}
-  </div>
-);
+import Numbers from './components/Numbers';
+import ControlledInput from './components/ControlledInput';
 
 const App = () => {
   const [persons, setPersons] = useState([{ name: 'Arto Hellas' }]);
   const [newName, setNewName] = useState('');
-
-  const handleNameChange = (e) => {
-    setNewName(e.target.value);
-  };
+  const [newPhone, setNewPhone] = useState('');
 
   const addPerson = (e) => {
     e.preventDefault();
     if (persons.map((p) => p.name).includes(newName)) {
       alert(`${newName} is already added to phonebook`);
-      return
+      return;
     }
     setPersons((persons) => persons.concat({ name: newName }));
     setNewName('');
@@ -31,9 +22,16 @@ const App = () => {
     <div>
       <h2>Phonebook</h2>
       <form onSubmit={addPerson}>
-        <div>
-          name: <input value={newName} onChange={handleNameChange} />
-        </div>
+        <ControlledInput
+          text="name"
+          value={newName}
+          onChange={(e) => setNewName(e.target.value)}
+        />
+        <ControlledInput
+          text="number"
+          value={newPhone}
+          onChange={(e) => setNewPhone(e.target.value)}
+        />
         <div>
           <button type="submit">add</button>
         </div>
