@@ -1,4 +1,5 @@
-import axios from 'axios';
+import personService from '../services/persons';
+
 import ControlledInput from './ControlledInput';
 
 const Form = ({ personState, nameState, numberState }) => {
@@ -21,8 +22,8 @@ const Form = ({ personState, nameState, numberState }) => {
       return;
     }
 
-    const newPerson = { name: newName, number: newNumber };
-    axios.post('http://localhost:3001/persons', newPerson).then((res) => {
+    const newPerson = { name: newName, number: newNumber };    
+    personService.create(newPerson).then((res) => {
       setPersons((persons) => persons.concat(res.data));
       setNewName('');
       setNewNumber('');
