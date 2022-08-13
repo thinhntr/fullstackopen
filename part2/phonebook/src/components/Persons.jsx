@@ -1,8 +1,9 @@
 import personService from '../services/persons';
 
-const Persons = ({ personState, keywordState }) => {
+const Persons = ({ personState, keywordState, alreadyRemovedState }) => {
   const [persons, setPersons] = personState;
-  const keyword = keywordState[0]
+  const [, setAlreadyRemoved] = alreadyRemovedState;
+  const keyword = keywordState[0];
 
   const deletePerson = (name, id) => {
     if (window.confirm(`Delete ${name}?`)) {
@@ -10,8 +11,9 @@ const Persons = ({ personState, keywordState }) => {
         .remove(id)
         .then(() => setPersons((persons) => persons.filter((p) => p.id !== id)))
         .catch(() => {
-          alert(`${name} was already deleted from server`);
           setPersons((persons) => persons.filter((p) => p.id !== id));
+          setAlreadyRemoved(`${name} has already been removed from server`);
+          setTimeout(() => setAlreadyRemoved(null), 4000);
         });
     }
   };

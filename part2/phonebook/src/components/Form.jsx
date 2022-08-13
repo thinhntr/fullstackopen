@@ -2,20 +2,30 @@ import personService from '../services/persons';
 
 import ControlledInput from './ControlledInput';
 
-const Form = ({ personState, nameState, numberState }) => {
+const Form = ({
+  personState,
+  nameState,
+  numberState,
+  newPersonSuccessState,
+  numberChangedState,
+}) => {
   const [newName, setNewName] = nameState;
   const [newNumber, setNewNumber] = numberState;
   const [persons, setPersons] = personState;
+  const [, setNewPersonSuccess] = newPersonSuccessState;
+  const [, setNumberChangedState] = numberChangedState;
 
   const updateNumber = (person) => {
     const updatedPerson = { ...person, number: newNumber };
-    personService
-      .update(person.id, updatedPerson)
-      .then((res) =>
-        setPersons((persons) =>
-          persons.map((p) => (p.id !== person.id ? p : res.data))
-        )
+    personService.update(person.id, updatedPerson).then((res) => {
+      setPersons((persons) =>
+        persons.map((p) => (p.id !== person.id ? p : res.data))
       );
+      setNumberChangedState(`Changed ${person.name}'s number`);
+      setTimeout(() => {
+        setNumberChangedState(null)
+      }, 4000);
+    });
   };
 
   const addPerson = (e) => {
@@ -43,6 +53,8 @@ const Form = ({ personState, nameState, numberState }) => {
     const newPerson = { name: newName, number: newNumber };
     personService.create(newPerson).then((res) => {
       setPersons((persons) => persons.concat(res.data));
+      setNewPersonSuccess(`Added ${newName}`);
+      setTimeout(() => setNewPersonSuccess(null), 4000);
       setNewName('');
       setNewNumber('');
     });
