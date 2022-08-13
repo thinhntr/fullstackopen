@@ -5,7 +5,7 @@ const ManyCountries = ({ countries }) => {
   const [idx, setIdx] = useState(-1);
 
   return (
-    <>
+    <div>
       <ul>
         {countries.map((country, i) => (
           <li key={country.name.common}>
@@ -17,7 +17,7 @@ const ManyCountries = ({ countries }) => {
         ))}
       </ul>
       {idx >= 0 && <SingleCountry country={countries[idx]} />}
-    </>
+    </div>
   );
 };
 
