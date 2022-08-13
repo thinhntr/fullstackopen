@@ -26,7 +26,7 @@ const App = () => {
       <Form {...{ nameState, numberState, personState }} />
 
       <h3>Numbers</h3>
-      <Persons personState={personState} keyword={keywordState[0]} />
+      <Persons {...{ personState, keywordState }} />
     </div>
   );
 };

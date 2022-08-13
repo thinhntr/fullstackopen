@@ -1,7 +1,8 @@
 import personService from '../services/persons';
 
-const Persons = ({ personState, keyword }) => {
+const Persons = ({ personState, keywordState }) => {
   const [persons, setPersons] = personState;
+  const keyword = keywordState[0]
 
   const deletePerson = (name, id) => {
     if (window.confirm(`Delete ${name}?`)) {
