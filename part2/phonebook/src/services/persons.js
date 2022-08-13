@@ -7,6 +7,8 @@ const create = (newObj) => axios.post(baseUrl, newObj);
 
 const remove = (id) => axios.delete(`${baseUrl}/${id}`);
 
-const personService = { getAll, create, remove };
+const update = (id, newObj) => axios.put(`${baseUrl}/${id}`, newObj);
+
+const personService = { getAll, create, remove, update };
 
 export default personService;

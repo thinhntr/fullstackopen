@@ -7,12 +7,30 @@ const Form = ({ personState, nameState, numberState }) => {
   const [newNumber, setNewNumber] = numberState;
   const [persons, setPersons] = personState;
 
+  const updateNumber = (person) => {
+    const updatedPerson = { ...person, number: newNumber };
+    personService
+      .update(person.id, updatedPerson)
+      .then((res) =>
+        setPersons((persons) =>
+          persons.map((p) => (p.id !== person.id ? p : res.data))
+        )
+      );
+  };
+
   const addPerson = (e) => {
     e.preventDefault();
 
     // Check duplicate name
-    if (persons.some((p) => p.name.includes(newName))) {
-      alert(`${newName} is already added to phonebook`);
+    for (const person of persons) {
+      if (person.name !== newName) continue;
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        updateNumber(person);
+      }
       return;
     }
 
@@ -22,7 +40,7 @@ const Form = ({ personState, nameState, numberState }) => {
       return;
     }
 
-    const newPerson = { name: newName, number: newNumber };    
+    const newPerson = { name: newName, number: newNumber };
     personService.create(newPerson).then((res) => {
       setPersons((persons) => persons.concat(res.data));
       setNewName('');
