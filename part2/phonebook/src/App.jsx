@@ -11,11 +11,11 @@ const App = () => {
   const numberState = useState('');
   const keywordState = useState('');
   const personState = useState([]);
-  const [persons, setPersons] = personState;
 
   useEffect(() => {
-    personService.getAll().then((res) => setPersons(res.data));
-  }, [setPersons]);
+    personService.getAll().then((res) => personState[1](res.data));
+    // eslint-disable-next-line
+  }, []);
 
   return (
     <div>
@@ -26,7 +26,7 @@ const App = () => {
       <Form {...{ nameState, numberState, personState }} />
 
       <h3>Numbers</h3>
-      <Persons persons={persons} keyword={keywordState[0]} />
+      <Persons personState={personState} keyword={keywordState[0]} />
     </div>
   );
 };
