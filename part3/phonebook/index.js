@@ -1,6 +1,8 @@
 const express = require("express");
 const app = express();
 
+app.use(express.json());
+
 let persons = [
   {
     id: 1,
@@ -44,6 +46,38 @@ app.delete("/api/persons/:id", (req, res) => {
   const id = Number(req.params.id);
   persons = persons.filter((person) => person.id !== id);
   res.status(204).end();
+});
+
+const generateID = () => {
+  const usedIDs = new Set(persons.map((person) => person.id));
+  usedIDs.add(null);
+  let id = null;
+  while (usedIDs.has(id)) {
+    id = Math.floor(Math.random() * 1000);
+  }
+  return id;
+};
+
+app.post("/api/persons", (req, res) => {
+  const body = req.body;
+
+  if (!body.name) {
+    return res.status(400).json({ error: "name missing" });
+  }
+
+  if (!body.number) {
+    return res.status(400).json({ error: "number missing" });
+  }
+
+  const person = {
+    name: body.name,
+    number: body.number,
+    id: generateID(),
+  };
+
+  persons = persons.concat(person);
+
+  res.json(person);
 });
 
 const PORT = 3001;
