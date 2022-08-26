@@ -58,11 +58,18 @@ const generateID = () => {
   return id;
 };
 
+const checkDuplicateName = (name) =>
+  persons.some((person) => person.name === name);
+
 app.post("/api/persons", (req, res) => {
   const body = req.body;
 
   if (!body.name) {
     return res.status(400).json({ error: "name missing" });
+  }
+
+  if (checkDuplicateName(body.name)) {
+    return res.status(400).json({ error: "name must be unique" });
   }
 
   if (!body.number) {
